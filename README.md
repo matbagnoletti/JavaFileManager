@@ -21,22 +21,22 @@ Per utilizzare JFM è necessario:
    - `boolean mostraAvvisi`: se `true`, mostra eventuali avvisi ed errori a video.
    - `String URL`: Il percorso dalla root del file da gestire.
 
-   ```java
-   /* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
+    ```java
+    /* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager();
-   
+    
     /* Non mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager(false);
-   
-   /* Mostra di default avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
+    
+    /* Mostra di default avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager(true);
-   
-   /* Mostra di default avvisi ed errori a video. Il percorso del file è quello specificato. */
+    
+    /* Mostra di default avvisi ed errori a video. Il percorso del file è quello specificato. */
     JavaFileManager jfm = new JavaFileManager("percorso/del/tuo/file.txt");
-   
-   /* Mostra avvisi ed errori a video. Il percorso del file è quello specificato. */
+    
+    /* Mostra avvisi ed errori a video. Il percorso del file è quello specificato. */
     JavaFileManager jfm = new JavaFileManager(true, "percorso/del/tuo/file.txt");
-   
+    
     /* Non mostra avvisi ed errori a video. Il percorso del file è quello specificato. */
     JavaFileManager jfm = new JavaFileManager(false, "percorso/del/tuo/file.txt");
     ```
