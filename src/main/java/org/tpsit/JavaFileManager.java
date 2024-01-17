@@ -89,7 +89,7 @@ public class JavaFileManager {
      *
      * @param testoDaScrivere Testo da scrivere nel file.
      */
-    public void scriviTesto(String testoDaScrivere) {
+    public void scrivi(String testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (BufferedWriter outputTesto = new BufferedWriter(new FileWriter(this.fileDaGestire, true))) {
                 outputTesto.write(testoDaScrivere);
@@ -107,7 +107,7 @@ public class JavaFileManager {
      * @param testoDaScrivere Testo da scrivere nel file.
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public void scriviTesto(String testoDaScrivere, boolean mandaACapo) {
+    public void scrivi(String testoDaScrivere, boolean mandaACapo) {
         if(this.fileDaGestire != null) {
             try (BufferedWriter outputTesto = new BufferedWriter(new FileWriter(this.fileDaGestire, true))) {
                 outputTesto.write(testoDaScrivere);
@@ -126,7 +126,7 @@ public class JavaFileManager {
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public void scriviTesto(String testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public void scrivi(String testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (BufferedWriter outputTesto = new BufferedWriter(new FileWriter(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.write(testoDaScrivere);
@@ -136,6 +136,60 @@ public class JavaFileManager {
             }
         } else {
             if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+    /**
+     * Metodo che permette di serializzare un oggetto in un file. Di default, non cancella il contenuto precedente del file.
+     *
+     * @param oggettoDaSerializzare Oggetto da serializzare.
+     */
+    public void scriviOggettoSerializzato(Object oggettoDaSerializzare) {
+        if(this.fileDaGestire != null) {
+            try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputOggetto.writeObject(oggettoDaSerializzare);
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di serializzare un oggetto in un file.
+     *
+     * @param oggettoDaSerializzare Oggetto da serializzare.
+     * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
+     */
+    public void scriviOggettoSerializzato(Object oggettoDaSerializzare, boolean cancellaContenutoPrecedente) {
+        if(this.fileDaGestire != null) {
+            try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
+                outputOggetto.writeObject(oggettoDaSerializzare);
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+    /**
+     * Metodo che permette di de-serializzare un oggetto da un file.
+     *
+     * @see #scriviOggettoSerializzato(Object)
+     * @see #scriviOggettoSerializzato(Object, boolean)
+     * @return Oggetto de-serializzato. Null in caso di errore durante la de-serializzazione del file.
+     */
+    public Object ottieniOggettoSerializzato() {
+        if(this.fileDaGestire != null) {
+            try (ObjectInputStream inputOggetto = new ObjectInputStream(new FileInputStream(this.fileDaGestire))) {
+                return inputOggetto.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la de-serializzazione dell'oggetto tramite JFM.");
+                return null;
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile de-serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.");
+            return null;
         }
     }
 }

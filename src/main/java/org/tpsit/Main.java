@@ -7,7 +7,7 @@ package org.tpsit;
  */
 public class Main {
     public static void main(String[] args) {
-        /* esempio di possibili istanze di JavaFileManager (JFM)
+        /* Esempi di possibili istanze di JavaFileManager (JFM)
             JavaFileManager jfm = new JavaFileManager();
             JavaFileManager jfm = new JavaFileManager(false);
             JavaFileManager jfm = new JavaFileManager(true); stesso funzionamento di new JavaFileManager();
