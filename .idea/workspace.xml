@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ab99e9b7-d810-4b66-a778-fbf8e7d349a2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/tpsit/JavaFileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/tpsit/JavaFileManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/tpsit/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/tpsit/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +55,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -69,6 +69,8 @@
       <updated>1705434115590</updated>
       <workItem from="1705434117454" duration="5112000" />
       <workItem from="1705485710824" duration="6221000" />
+      <workItem from="1705499667177" duration="177000" />
+      <workItem from="1705514592459" duration="3633000" />
     </task>
     <servers />
   </component>

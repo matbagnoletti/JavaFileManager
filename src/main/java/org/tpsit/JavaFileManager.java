@@ -10,6 +10,7 @@ import java.io.*;
  *
  * Classe che gestisce i file in Java. Permette di leggere e scrivere dati tipizzati e righe di testo. Se non diversamente impostato, stampa eventuali avvisi sotto forma di errori.
  * Non supporta la scrittura e lettura di dati tipizzati come byte, bytes, long, short, char, chars.
+ * JFM è thread-safe. La clausola synchronized garantisce la mutua esclusione tra i thread che accedono a JFM.
  */
 public class JavaFileManager {
 
@@ -73,7 +74,7 @@ public class JavaFileManager {
      * Metodo che permette di leggere l'intero contenuto del file sotto forma di String.
      * @return Stringa contenente l'intero contenuto del file. Null in caso di errore durante la lettura del file.
      */
-    public String ottieniTesto() {
+    public synchronized String ottieniTesto() {
         if(this.fileDaGestire != null) {
             try (BufferedReader inputTesto = new BufferedReader(new FileReader(this.fileDaGestire))) {
                 StringBuilder contenutoTesto = new StringBuilder();
@@ -98,7 +99,7 @@ public class JavaFileManager {
      *
      * @param testoDaScrivere Testo da scrivere nel file.
      */
-    public void scrivi(String testoDaScrivere) {
+    public synchronized void scrivi(String testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (BufferedWriter outputTesto = new BufferedWriter(new FileWriter(this.fileDaGestire, true))) {
                 outputTesto.write(testoDaScrivere);
@@ -117,7 +118,7 @@ public class JavaFileManager {
      * @param testoDaScrivere Testo da scrivere nel file.
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public void scrivi(String testoDaScrivere, boolean mandaACapo) {
+    public synchronized void scrivi(String testoDaScrivere, boolean mandaACapo) {
         if(this.fileDaGestire != null) {
             try (BufferedWriter outputTesto = new BufferedWriter(new FileWriter(this.fileDaGestire, true))) {
                 outputTesto.write(testoDaScrivere);
@@ -137,7 +138,7 @@ public class JavaFileManager {
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public void scrivi(String testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scrivi(String testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (BufferedWriter outputTesto = new BufferedWriter(new FileWriter(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.write(testoDaScrivere);
@@ -155,7 +156,7 @@ public class JavaFileManager {
      *
      * @param oggettoDaSerializzare Oggetto da serializzare.
      */
-    public void scriviOggettoSerializzato(Object oggettoDaSerializzare) {
+    public synchronized void scriviOggettoSerializzato(Object oggettoDaSerializzare) {
         if(this.fileDaGestire != null) {
             try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputOggetto.writeObject(oggettoDaSerializzare);
@@ -173,7 +174,7 @@ public class JavaFileManager {
      * @param oggettoDaSerializzare Oggetto da serializzare.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public void scriviOggettoSerializzato(Object oggettoDaSerializzare, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviOggettoSerializzato(Object oggettoDaSerializzare, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputOggetto.writeObject(oggettoDaSerializzare);
@@ -192,7 +193,7 @@ public class JavaFileManager {
      * @see #scriviOggettoSerializzato(Object, boolean)
      * @return Oggetto de-serializzato. Null in caso di errore durante la de-serializzazione del file.
      */
-    public Object ottieniOggettoSerializzato() {
+    public synchronized Object ottieniOggettoSerializzato() {
         if(this.fileDaGestire != null) {
             try (ObjectInputStream inputOggetto = new ObjectInputStream(new FileInputStream(this.fileDaGestire))) {
                 return inputOggetto.readObject();
@@ -211,7 +212,7 @@ public class JavaFileManager {
      *
      * @param testoDaScrivere Testo da scrivere nel file.
      */
-    public void scriviTipizzato(String testoDaScrivere) {
+    public synchronized void scriviTipizzato(String testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeUTF(testoDaScrivere);
@@ -229,7 +230,7 @@ public class JavaFileManager {
      * @param testoDaScrivere Testo da scrivere nel file.
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public void scriviTipizzato(String testoDaScrivere, boolean mandaACapo) {
+    public synchronized void scriviTipizzato(String testoDaScrivere, boolean mandaACapo) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeUTF(testoDaScrivere);
@@ -249,7 +250,7 @@ public class JavaFileManager {
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente  Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public void scriviTipizzato(String testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviTipizzato(String testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.writeUTF(testoDaScrivere);
@@ -267,7 +268,7 @@ public class JavaFileManager {
      *
      * @param testoDaScrivere Testo da scrivere nel file.
      */
-    public void scriviTipizzato(int testoDaScrivere) {
+    public synchronized void scriviTipizzato(int testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeInt(testoDaScrivere);
@@ -305,7 +306,7 @@ public class JavaFileManager {
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public void scriviTipizzato(int testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviTipizzato(int testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.writeInt(testoDaScrivere);
@@ -323,7 +324,7 @@ public class JavaFileManager {
      *
      * @param testoDaScrivere Testo da scrivere nel file.
      */
-    public void scriviTipizzato(double testoDaScrivere) {
+    public synchronized void scriviTipizzato(double testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeDouble(testoDaScrivere);
@@ -341,7 +342,7 @@ public class JavaFileManager {
      * @param testoDaScrivere Testo da scrivere nel file.
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public void scriviTipizzato(double testoDaScrivere, boolean mandaACapo) {
+    public synchronized void scriviTipizzato(double testoDaScrivere, boolean mandaACapo) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeDouble(testoDaScrivere);
@@ -361,7 +362,7 @@ public class JavaFileManager {
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public void scriviTipizzato(double testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviTipizzato(double testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.writeDouble(testoDaScrivere);
@@ -379,7 +380,7 @@ public class JavaFileManager {
      *
      * @param testoDaScrivere Testo da scrivere nel file.
      */
-    public void scriviTipizzato(float testoDaScrivere) {
+    public synchronized void scriviTipizzato(float testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeFloat(testoDaScrivere);
@@ -397,7 +398,7 @@ public class JavaFileManager {
      * @param testoDaScrivere Testo da scrivere nel file.
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public void scriviTipizzato(float testoDaScrivere, boolean mandaACapo) {
+    public synchronized void scriviTipizzato(float testoDaScrivere, boolean mandaACapo) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeFloat(testoDaScrivere);
@@ -417,7 +418,7 @@ public class JavaFileManager {
      * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public void scriviTipizzato(float testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviTipizzato(float testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.writeFloat(testoDaScrivere);
@@ -435,7 +436,7 @@ public class JavaFileManager {
      *
      * @return Stringa UTF letta dal file. Null in caso di errore durante la lettura del file.
      */
-    public String ottieniTestoTipizzato() {
+    public synchronized String ottieniTestoTipizzato() {
         if(this.fileDaGestire != null) {
             try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
                 return inputTesto.readUTF();
@@ -454,7 +455,7 @@ public class JavaFileManager {
      *
      * @return Numero int letto dal file. 0 in caso di errore durante la lettura del file.
      */
-    public int ottieniIntTipizzato() {
+    public synchronized int ottieniIntTipizzato() {
         if(this.fileDaGestire != null) {
             try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
                 return inputTesto.readInt();
@@ -473,7 +474,7 @@ public class JavaFileManager {
      *
      * @return Numero double letto dal file. 0 in caso di errore durante la lettura del file.
      */
-    public double ottieniDoubleTipizzato() {
+    public synchronized double ottieniDoubleTipizzato() {
         if(this.fileDaGestire != null) {
             try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
                 return inputTesto.readDouble();
@@ -492,7 +493,7 @@ public class JavaFileManager {
      *
      * @return Numero float letto dal file. 0 in caso di errore durante la lettura del file.
      */
-    public float ottieniFloatTipizzato() {
+    public synchronized float ottieniFloatTipizzato() {
         if(this.fileDaGestire != null) {
             try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
                 return inputTesto.readFloat();
