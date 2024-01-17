@@ -17,9 +17,7 @@ Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permett
 Per utilizzare JFM è necessario:
 1. Creare un'istanza della classe `JavaFileManager`:
    
-   Il costruttore accetta due parametri:
-   - `boolean mostraAvvisi`: se `true`, mostra eventuali avvisi ed errori a video.
-   - `String URL`: Il percorso dalla root del file da gestire.
+   Il costruttore accetta due parametri: `boolean mostraAvvisi` (se `true`, mostra eventuali avvisi ed errori a video) e `String URL` (il percorso dalla root del file da gestire).
 
     ```java
     /* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
