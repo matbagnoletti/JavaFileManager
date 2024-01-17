@@ -9,17 +9,21 @@ import java.io.*;
  * @since 1.0.0
  *
  * Classe che gestisce i file in Java. Permette di leggere e scrivere dati tipizzati e righe di testo. Se non diversamente impostato, stampa eventuali avvisi sotto forma di errori.
+ * Non supporta la scrittura e lettura di dati tipizzati come byte, bytes, long, short, char, chars.
  */
 public class JavaFileManager {
+
     /**
      * Variabile che indica se stampare o meno gli avvisi sotto forma di errori.
      */
     private boolean mostraAvvisi = true;
+
     /**
      * File da gestire.
      * Sfrutta la classe File di Java per verificarne l'esistenza e per leggerne le proprietà.
      */
     private File fileDaGestire;
+
     /**
      * Costruttore di JavaFileManager.
      * Versione di default.
@@ -28,6 +32,7 @@ public class JavaFileManager {
         this.fileDaGestire = null;
         System.err.println("Non è stato inserito alcun file da gestire all'interno del JFM creato.");
     }
+
     /**
      * Costruttore di JavaFileManager.
      * @param mostraAvvisi Variabile che indica se stampare o meno gli avvisi sotto forma di errori.
@@ -37,6 +42,7 @@ public class JavaFileManager {
         this.fileDaGestire = null;
         if(this.mostraAvvisi) System.err.println("Non è stato inserito alcun file da gestire all'interno del JFM creato.");
     }
+
     /**
      * Costruttore di JavaFileManager.
      * @param URL Percorso dalla root del progetto del file da gestire.
@@ -48,6 +54,7 @@ public class JavaFileManager {
             this.fileDaGestire = null;
         }
     }
+
     /**
      * Costruttore di JavaFileManager.
      * @param mostraAvvisi Variabile che indica se stampare o meno gli avvisi sotto forma di errori.
@@ -61,6 +68,7 @@ public class JavaFileManager {
             this.fileDaGestire = null;
         }
     }
+
     /**
      * Metodo che permette di leggere l'intero contenuto del file sotto forma di String.
      * @return Stringa contenente l'intero contenuto del file. Null in caso di errore durante la lettura del file.
@@ -84,6 +92,7 @@ public class JavaFileManager {
             return null;
         }
     }
+
     /**
      * Metodo che permette di leggere l'intero contenuto del file sotto forma di String. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
      *
@@ -101,6 +110,7 @@ public class JavaFileManager {
             if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
         }
     }
+
     /**
      * Metodo che permette di leggere l'intero contenuto del file sotto forma di String. Di default, non cancella il contenuto precedente del file.
      *
@@ -119,6 +129,7 @@ public class JavaFileManager {
             if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
         }
     }
+
     /**
      * Metodo che permette di leggere l'intero contenuto del file sotto forma di String.
      *
@@ -138,6 +149,7 @@ public class JavaFileManager {
             if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
         }
     }
+
     /**
      * Metodo che permette di serializzare un oggetto in un file. Di default, non cancella il contenuto precedente del file.
      *
@@ -172,6 +184,7 @@ public class JavaFileManager {
             if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.");
         }
     }
+
     /**
      * Metodo che permette di de-serializzare un oggetto da un file.
      *
@@ -190,6 +203,306 @@ public class JavaFileManager {
         } else {
             if(this.mostraAvvisi) System.err.println("Impossibile de-serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.");
             return null;
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere una stringa UTF in un file. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     */
+    public void scriviTipizzato(String testoDaScrivere) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputTesto.writeUTF(testoDaScrivere);
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere una stringa UTF in un file. Di default, non cancella il contenuto precedente del file.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
+     */
+    public void scriviTipizzato(String testoDaScrivere, boolean mandaACapo) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputTesto.writeUTF(testoDaScrivere);
+                if(mandaACapo) outputTesto.writeUTF("\n");
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere una stringa UTF in un file.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
+     * @param cancellaContenutoPrecedente  Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
+     */
+    public void scriviTipizzato(String testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
+                outputTesto.writeUTF(testoDaScrivere);
+                if(mandaACapo) outputTesto.writeUTF("\n");
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero int in un file. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     */
+    public void scriviTipizzato(int testoDaScrivere) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputTesto.writeInt(testoDaScrivere);
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero int in un file. Di default, non cancella il contenuto precedente del file.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
+     */
+    public void scriviTipizzato(int testoDaScrivere, boolean mandaACapo) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputTesto.writeInt(testoDaScrivere);
+                if(mandaACapo) outputTesto.writeUTF("\n");
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero int in un file.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
+     * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
+     */
+    public void scriviTipizzato(int testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
+                outputTesto.writeInt(testoDaScrivere);
+                if(mandaACapo) outputTesto.writeUTF("\n");
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero double in un file. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     */
+    public void scriviTipizzato(double testoDaScrivere) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputTesto.writeDouble(testoDaScrivere);
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero double in un file. Di default, non cancella il contenuto precedente del file.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
+     */
+    public void scriviTipizzato(double testoDaScrivere, boolean mandaACapo) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputTesto.writeDouble(testoDaScrivere);
+                if(mandaACapo) outputTesto.writeUTF("\n");
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero double in un file.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
+     * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
+     */
+    public void scriviTipizzato(double testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
+                outputTesto.writeDouble(testoDaScrivere);
+                if(mandaACapo) outputTesto.writeUTF("\n");
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero float in un file. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     */
+    public void scriviTipizzato(float testoDaScrivere) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputTesto.writeFloat(testoDaScrivere);
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero float in un file. Di default, non cancella il contenuto precedente del file.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
+     */
+    public void scriviTipizzato(float testoDaScrivere, boolean mandaACapo) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                outputTesto.writeFloat(testoDaScrivere);
+                if(mandaACapo) outputTesto.writeUTF("\n");
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di scrivere un numero float in un file.
+     *
+     * @param testoDaScrivere Testo da scrivere nel file.
+     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
+     * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
+     */
+    public void scriviTipizzato(float testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+        if(this.fileDaGestire != null) {
+            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
+                outputTesto.writeFloat(testoDaScrivere);
+                if(mandaACapo) outputTesto.writeUTF("\n");
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+        }
+    }
+
+    /**
+     * Metodo che permette di leggere una stringa UTF da un file.
+     *
+     * @return Stringa UTF letta dal file. Null in caso di errore durante la lettura del file.
+     */
+    public String ottieniTestoTipizzato() {
+        if(this.fileDaGestire != null) {
+            try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
+                return inputTesto.readUTF();
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.");
+                return null;
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+            return null;
+        }
+    }
+
+    /**
+     * Metodo che permette di leggere un numero int da un file.
+     *
+     * @return Numero int letto dal file. 0 in caso di errore durante la lettura del file.
+     */
+    public int ottieniIntTipizzato() {
+        if(this.fileDaGestire != null) {
+            try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
+                return inputTesto.readInt();
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.");
+                return 0;
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+            return 0;
+        }
+    }
+
+    /**
+     * Metodo che permette di leggere un numero double da un file.
+     *
+     * @return Numero double letto dal file. 0 in caso di errore durante la lettura del file.
+     */
+    public double ottieniDoubleTipizzato() {
+        if(this.fileDaGestire != null) {
+            try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
+                return inputTesto.readDouble();
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.");
+                return 0;
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+            return 0;
+        }
+    }
+
+    /**
+     * Metodo che permette di leggere un numero float da un file.
+     *
+     * @return Numero float letto dal file. 0 in caso di errore durante la lettura del file.
+     */
+    public float ottieniFloatTipizzato() {
+        if(this.fileDaGestire != null) {
+            try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
+                return inputTesto.readFloat();
+            } catch (IOException e) {
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.");
+                return 0;
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.");
+            return 0;
         }
     }
 }
