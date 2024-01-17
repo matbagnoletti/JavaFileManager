@@ -20,8 +20,8 @@ Per utilizzare JFM è necessario:
    Il costruttore accetta due parametri:
    - `boolean mostraAvvisi`: se `true`, mostra eventuali avvisi ed errori a video.
    - `String URL`: Il percorso dalla root del file da gestire.
-   
-    ```java
+
+   ```java
    /* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager();
    
