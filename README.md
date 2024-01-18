@@ -39,14 +39,16 @@ Per utilizzare JFM è necessario:
     JavaFileManager jfm = new JavaFileManager(false, "percorso/del/tuo/file.txt");
     ```
 
-2. Scrivere su un file:
+2. (eventualmente) Utilizzare i metodi di scrittura appropriati:
    
    JFM permette di scrivere su un file in tre modi:
    - [formato standard](#scrivere-nel-formato-standard) (con `PrintWriter`).
    - [formato oggetto serializzato](#scrivere-un-oggetto-serializzato) (con `ObjectOutputStream`).
    - [formato dati tipizzati](#scrivere-dati-tipizzati) (con `DataOutputStream`).
 
-3. Leggere da un file:
+3. (eventualmente) Utilizzare i metodi di lettura appropriati:
+
+   JFM permette di leggere da un file in tre modi:
    - [formato standard](#leggere-nel-formato-standard) (con `BufferedReader`).
    - [formato oggetto serializzato](#leggere-un-oggetto-serializzato) (con `ObjectInputStream`).
    - [formato dati tipizzati](#leggere-dati-tipizzati) (con `DataInputStream`).
