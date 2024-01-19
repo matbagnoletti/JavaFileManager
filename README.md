@@ -2,12 +2,14 @@
 
 > [!NOTE]
 >
-> Versione 1.0.0
-> 
 > Autore: [**Matteo Bagnoletti Tini**](https://github.com/matbagnoletti)
+> 
+> Versione: 1.0.0
+>
+> Status: Testing/Fixing
 
 ## Descrizione
-Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permetta l'input e output in Java da e verso file. L'obiettivo è quello di rendere l'utilizzo degli stream più semplice e veloce, sfruttando l'incapsulamento Java per nasconderne all'utente la complessità.
+Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permetta l'input e l'output da e verso file in Java, utilizzando stream diversi in base alle esigenze. L'obiettivo è quello di rendere l'utilizzo di questi stream più semplice e veloce, sfruttando l'incapsulamento Java per nasconderne all'utente la complessità.
 
 > [!TIP]
 >
