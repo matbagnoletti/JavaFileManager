@@ -158,10 +158,14 @@ public class JavaFileManager {
      */
     public synchronized void scriviOggettoSerializzato(Object oggettoDaSerializzare) {
         if(this.fileDaGestire != null) {
-            try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
-                outputOggetto.writeObject(oggettoDaSerializzare);
-            } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM.");
+            if(oggettoDaSerializzare instanceof Serializable){
+                try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
+                    outputOggetto.writeObject(oggettoDaSerializzare);
+                } catch (IOException e) {
+                    if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM.");
+                }
+            } else {
+                if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. L'oggetto inserito non è serializzabile.");
             }
         } else {
             if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.");
@@ -176,10 +180,14 @@ public class JavaFileManager {
      */
     public synchronized void scriviOggettoSerializzato(Object oggettoDaSerializzare, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
-            try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
-                outputOggetto.writeObject(oggettoDaSerializzare);
-            } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM.");
+            if (oggettoDaSerializzare instanceof Serializable){
+                try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
+                    outputOggetto.writeObject(oggettoDaSerializzare);
+                } catch (IOException e) {
+                    if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM.");
+                }
+            } else {
+                if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. L'oggetto inserito non è serializzabile.");
             }
         } else {
             if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.");

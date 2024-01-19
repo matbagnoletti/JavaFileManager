@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ab99e9b7-d810-4b66-a778-fbf8e7d349a2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/tpsit/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/tpsit/JavaFileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/tpsit/JavaFileManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,10 +57,28 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="QodanaCloudProjectLink">
+    <option name="lastReportId" value="eWbxa" />
+    <option name="linkedProjectId" value="ALmbx" />
+    <option name="linkedProjectName" value="JavaFileManager" />
+    <option name="organizationId" value="zExoY" />
+    <option name="userId" value="ARE6y" />
+  </component>
+  <component name="QodanaHighlightedReportService">
+    <option name="cloudReportPersistedInfo">
+      <CloudReportPersistedInfo>
+        <option name="projectId" value="ALmbx" />
+        <option name="reportId" value="eWbxa" />
+      </CloudReportPersistedInfo>
+    </option>
+  </component>
+  <component name="QodanaIsSelectedPersistenceService">
+    <option name="selectedOrLoading" value="true" />
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -74,7 +92,10 @@
       <workItem from="1705499667177" duration="177000" />
       <workItem from="1705514592459" duration="6088000" />
       <workItem from="1705593978654" duration="208000" />
-      <workItem from="1705594227963" duration="771000" />
+      <workItem from="1705594227963" duration="1282000" />
+      <workItem from="1705595591659" duration="86000" />
+      <workItem from="1705669498370" duration="94000" />
+      <workItem from="1705669694890" duration="139000" />
     </task>
     <servers />
   </component>
