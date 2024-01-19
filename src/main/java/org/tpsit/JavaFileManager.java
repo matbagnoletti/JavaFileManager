@@ -71,6 +71,26 @@ public class JavaFileManager {
     }
 
     /**
+     * Setter dell'attributo File fileDaGestire
+     * @param URL Percorso dalla root del progetto del file da gestire.
+     */
+    public void setFile(String URL) {
+        this.fileDaGestire = new File(URL);
+        if ((!this.fileDaGestire.exists() || !this.fileDaGestire.isFile()) && this.mostraAvvisi) {
+            System.err.println("Il file inserito non esiste. Inserire un URL assoluto dalla root del progetto.");
+            this.fileDaGestire = null;
+        }
+    }
+
+    /**
+     * Setter dell'attributo boolean mostraAvvisi
+     * @param mostraAvvisi Variabile che indica se stampare o meno gli avvisi sotto forma di errori.
+     */
+    public void setAvvisi(boolean mostraAvvisi) {
+        this.mostraAvvisi = mostraAvvisi;
+    }
+
+    /**
      * Metodo che permette di leggere l'intero contenuto del file sotto forma di String.
      * @return Stringa contenente l'intero contenuto del file. Null in caso di errore durante la lettura del file.
      */
