@@ -44,7 +44,7 @@ Per utilizzare JFM è necessario:
 2. (eventualmente) Utilizzare i metodi di scrittura appropriati:
    
    JFM permette di scrivere su un file in tre modi:
-   - [formato standard](#scrivere-nel-formato-standard) (con `PrintWriter`).
+   - [formato standard](#scrivere-nel-formato-standard) (con `BufferedWriter`).
    - [formato oggetto serializzato](#scrivere-un-oggetto-serializzato) (con `ObjectOutputStream`).
    - [formato dati tipizzati](#scrivere-dati-tipizzati) (con `DataOutputStream`).
 
@@ -57,7 +57,7 @@ Per utilizzare JFM è necessario:
 
 ## Scrivere nel formato standard
 
-La modalità standard di scrittura su file utilizza la classe `PrintWriter` e accetta 3 parametri:
+La modalità standard di scrittura su file utilizza la classe `BufferedWriter` e accetta 3 parametri:
 - `String testoDaScrivere`: il testo da scrivere sul file.
 - `boolean mandaACapo`: se `true`, manda a capo dopo aver scritto il testo.
 - `boolean cancellaContenutoPrecedente`: se `true` cancella il contenuto precedente del file, altrimenti scrive in append.
