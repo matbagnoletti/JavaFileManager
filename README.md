@@ -1,14 +1,16 @@
 # JavaFileManager
 
-> [!NOTE]
->
-> Versione 1.0.0
-> 
-> Autore: [**Matteo Bagnoletti Tini**](https://github.com/matbagnoletti)
+<p align="center">
+    <span style="display: block">@author: <a href="https://github.com/matbagnoletti">Matteo Bagnoletti Tini</a></span>
+    <span style="display: block">@version: 1.0.0</span>
+</p>
+<p align="center">
+    <img src="https://img.shields.io/github/last-commit/matbagnoletti/JavaFileManager?style=for-the-badge" alt="Ultimo commit">
+    <img src="https://img.shields.io/github/languages/code-size/matbagnoletti/JavaFileManager?style=for-the-badge" alt="Dimensione">
+</p>
 
 ## Descrizione
 Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permetta l'input e output in Java da e verso file. L'obiettivo è quello di rendere l'utilizzo degli stream più semplice e veloce, sfruttando l'incapsulamento Java per nasconderne all'utente la complessità.
-
 > [!TIP]
 >
 > La classe `JavaFileManager` è thread-safe, quindi può essere utilizzata in ambienti multi-thread senza problemi. Tuttavia, l'uso eccessivo della sincronizzazione può portare a una diminuzione delle prestazioni, quindi utilizzala con attenzione.
@@ -99,7 +101,13 @@ La modalità di scrittura su file di dati tipizzati utilizza la classe `DataOutp
   
 > [!CAUTION]
 >
-> Il file dovrà poi essere opportunamente letto con `ottieni[Testo/Int/Double/Float]Tipizzato()`.
+> Il file dovrà poi essere opportunamente letto con uno di questi metodi:
+> - `ottieniTestoTipizzato()`.
+> - `ottieniIntTipizzato()`.
+> - `ottieniDoubleTipizzato()`.
+> - `ottieniFloatTipizzato()`.
+> 
+> I dati dovranno essere letti necessariamente nello stesso ordine in cui sono stati scritti.
 
 ## Leggere nel formato standard
 
@@ -132,7 +140,13 @@ La modalità di lettura da file di dati tipizzati utilizza la classe `DataInputS
 
 > [!CAUTION]
 > 
-> Il file deve essere stato opportunamente scritto con `scrivi[Testo/Int/Double/Float]Tipizzato`. I dati devono essere letti necessariamente nello stesso ordine in cui sono stati scritti.
+> Il file deve essere stato opportunamente scritto con uno di questi metodi:
+> - `scriviTestoTipizzato()`.
+> - `scriviIntTipizzato()`.
+> - `scriviDoubleTipizzato()`.
+> - `scriviFloatTipizzato()`.
+> 
+> I dati devono essere letti necessariamente nello stesso ordine in cui sono stati scritti.
 
 ## Licenza d'uso
-Questo progetto (e tutte le sue versioni) sono rilasciate sotto la [**MB General Copyleft License**](LICENSE).
+Questo progetto (e tutte le sue versioni) sono rilasciate sotto la [MB General Copyleft License](LICENSE).
