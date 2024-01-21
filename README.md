@@ -3,7 +3,6 @@
 <p align="center" style="font-family: monospace">Made by <a href="https://github.com/matbagnoletti">@matbagnoletti</a></p>
 <p align="center">
     <img src="https://img.shields.io/github/last-commit/matbagnoletti/JavaFileManager?style=for-the-badge" alt="Ultimo commit">
-    <img src="https://img.shields.io/github/languages/code-size/matbagnoletti/JavaFileManager?style=for-the-badge" alt="Dimensione">
     <img src="https://img.shields.io/github/languages/top/matbagnoletti/JavaFileManager?style=for-the-badge" alt="Linguaggio">
 </p>
 
