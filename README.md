@@ -1,4 +1,4 @@
-# JavaFileManager
+<h1 align="center">JavaFileManager</h1>
 
 <p align="center">
     <span style="display: block">@author: <a href="https://github.com/matbagnoletti">Matteo Bagnoletti Tini</a></span>
@@ -11,6 +11,7 @@
 
 ## Descrizione
 Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permetta l'input e output in Java da e verso file. L'obiettivo è quello di rendere l'utilizzo degli stream più semplice e veloce, sfruttando l'incapsulamento Java per nasconderne all'utente la complessità.
+
 > [!TIP]
 >
 > La classe `JavaFileManager` è thread-safe, quindi può essere utilizzata in ambienti multi-thread senza problemi. Tuttavia, l'uso eccessivo della sincronizzazione può portare a una diminuzione delle prestazioni, quindi utilizzala con attenzione.
@@ -44,9 +45,9 @@ Per utilizzare JFM è necessario:
 2. (eventualmente) Utilizzare i metodi di scrittura appropriati:
 
    JFM permette di scrivere su un file in tre modi:
-    - [formato standard](#scrivere-nel-formato-standard) (con `PrintWriter`).
-    - [formato oggetto serializzato](#scrivere-un-oggetto-serializzato) (con `ObjectOutputStream`).
-    - [formato dati tipizzati](#scrivere-dati-tipizzati) (con `DataOutputStream`).
+   - [formato standard](#scrivere-nel-formato-standard) (con `BufferedWriter`).
+   - [formato oggetto serializzato](#scrivere-un-oggetto-serializzato) (con `ObjectOutputStream`).
+   - [formato dati tipizzati](#scrivere-dati-tipizzati) (con `DataOutputStream`).
 
 3. (eventualmente) Utilizzare i metodi di lettura appropriati:
 
@@ -57,7 +58,7 @@ Per utilizzare JFM è necessario:
 
 ## Scrivere nel formato standard
 
-La modalità standard di scrittura su file utilizza la classe `PrintWriter` e accetta 3 parametri:
+La modalità standard di scrittura su file utilizza la classe `BufferedWriter` e accetta 3 parametri:
 - `String testoDaScrivere`: il testo da scrivere sul file.
 - `boolean mandaACapo`: se `true`, manda a capo dopo aver scritto il testo.
 - `boolean cancellaContenutoPrecedente`: se `true` cancella il contenuto precedente del file, altrimenti scrive in append.
