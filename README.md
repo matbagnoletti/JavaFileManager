@@ -1,9 +1,7 @@
 <h1 align="center">JavaFileManager</h1>
 
-<p align="center">
-    <span style="display: block">@author: <a href="https://github.com/matbagnoletti">Matteo Bagnoletti Tini</a></span>
-    <span style="display: block">@version: 1.0.0</span>
-</p>
+<p align="center">@author: <a href="https://github.com/matbagnoletti">Matteo Bagnoletti Tini</a></p>
+<p align="center">@version: 1.0.0</p>
 <p align="center">
     <img src="https://img.shields.io/github/last-commit/matbagnoletti/JavaFileManager?style=for-the-badge" alt="Ultimo commit">
     <img src="https://img.shields.io/github/languages/code-size/matbagnoletti/JavaFileManager?style=for-the-badge" alt="Dimensione">
