@@ -18,7 +18,7 @@ Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permett
 ## Utilizzo
 Per utilizzare JFM è necessario:
 1. Creare un'istanza della classe `JavaFileManager`:
-   
+
    Il costruttore accetta due parametri: `boolean mostraAvvisi` (se `true`, mostra eventuali avvisi ed errori a video) e `String URL` (il percorso dalla root del file da gestire).
 
     ```java
@@ -42,18 +42,18 @@ Per utilizzare JFM è necessario:
     ```
 
 2. (eventualmente) Utilizzare i metodi di scrittura appropriati:
-   
+
    JFM permette di scrivere su un file in tre modi:
-   - [formato standard](#scrivere-nel-formato-standard) (con `PrintWriter`).
-   - [formato oggetto serializzato](#scrivere-un-oggetto-serializzato) (con `ObjectOutputStream`).
-   - [formato dati tipizzati](#scrivere-dati-tipizzati) (con `DataOutputStream`).
+    - [formato standard](#scrivere-nel-formato-standard) (con `PrintWriter`).
+    - [formato oggetto serializzato](#scrivere-un-oggetto-serializzato) (con `ObjectOutputStream`).
+    - [formato dati tipizzati](#scrivere-dati-tipizzati) (con `DataOutputStream`).
 
 3. (eventualmente) Utilizzare i metodi di lettura appropriati:
 
    JFM permette di leggere da un file in tre modi:
-   - [formato standard](#leggere-nel-formato-standard) (con `BufferedReader`).
-   - [formato oggetto serializzato](#leggere-un-oggetto-serializzato) (con `ObjectInputStream`).
-   - [formato dati tipizzati](#leggere-dati-tipizzati) (con `DataInputStream`).
+    - [formato standard](#leggere-nel-formato-standard) (con `BufferedReader`).
+    - [formato oggetto serializzato](#leggere-un-oggetto-serializzato) (con `ObjectInputStream`).
+    - [formato dati tipizzati](#leggere-dati-tipizzati) (con `DataInputStream`).
 
 ## Scrivere nel formato standard
 
@@ -82,9 +82,9 @@ La modalità di scrittura su file di un oggetto serializzato utilizza la classe 
    ```java
    jfm.scriviOggettoSerializzato(new Object());
    ```
-  
+
 > [!CAUTION]
->  
+>
 > L'oggetto deve essere serializzabile. Il file dovrà poi essere opportunamente letto con `ottieniOggettoSerializzato()`.
 
 ## Scrivere dati tipizzati
@@ -98,7 +98,7 @@ La modalità di scrittura su file di dati tipizzati utilizza la classe `DataOutp
    jfm.scriviIntTipizzato(1);
    jfm.scriviTestoTipizzato("Ciao, Mondo!");
    ```
-  
+
 > [!CAUTION]
 >
 > Il file dovrà poi essere opportunamente letto con uno di questi metodi:
@@ -106,7 +106,7 @@ La modalità di scrittura su file di dati tipizzati utilizza la classe `DataOutp
 > - `ottieniIntTipizzato()`.
 > - `ottieniDoubleTipizzato()`.
 > - `ottieniFloatTipizzato()`.
-> 
+>
 > I dati dovranno essere letti necessariamente nello stesso ordine in cui sono stati scritti.
 
 ## Leggere nel formato standard
@@ -126,7 +126,7 @@ La modalità di lettura da file di un oggetto serializzato utilizza la classe `O
    ```
 
 > [!CAUTION]
-> 
+>
 > L'oggetto deve essere serializzabile. Il file deve essere stato opportunamente scritto con `scriviOggettoSerializzato()`.
 
 ## Leggere dati tipizzati
@@ -139,13 +139,13 @@ La modalità di lettura da file di dati tipizzati utilizza la classe `DataInputS
    ```
 
 > [!CAUTION]
-> 
+>
 > Il file deve essere stato opportunamente scritto con uno di questi metodi:
 > - `scriviTestoTipizzato()`.
 > - `scriviIntTipizzato()`.
 > - `scriviDoubleTipizzato()`.
 > - `scriviFloatTipizzato()`.
-> 
+>
 > I dati devono essere letti necessariamente nello stesso ordine in cui sono stati scritti.
 
 ## Licenza d'uso
