@@ -7,15 +7,15 @@ import java.io.*;
  * @author Matteo Bagnoletti Tini
  * @version 1.0.0
  * @since 1.0.0
- *
- * Classe che gestisce i file in Java. Permette di leggere e scrivere dati tipizzati e righe di testo. Se non diversamente impostato, stampa eventuali avvisi sotto forma di errori.
+ * @see <a href="https://github.com/matbagnoletti/JavaFileManager">JavaFileManager on GitHub</a>
+ * <p> Classe che gestisce i file in Java. Permette di leggere e scrivere dati tipizzati e righe di testo. Se non diversamente impostato, stampa eventuali avvisi sotto forma di errori.
  * Non supporta la scrittura e lettura di dati tipizzati come byte, bytes, long, short, char, chars.
- * JFM è thread-safe. La clausola synchronized garantisce la mutua esclusione tra i thread che accedono a JFM.
+ * JFM è thread-safe. La clausola synchronized garantisce la mutua esclusione tra i thread che accedono a JFM.</p>
  */
 public class JavaFileManager {
 
     /**
-     * Variabile che indica se stampare o meno gli avvisi sotto forma di errori.
+     * Variabile che indica se stampare o meno gli avvisi sotto forma di errori (System.err).
      */
     private boolean mostraAvvisi = true;
 
@@ -537,6 +537,6 @@ public class JavaFileManager {
 
     @Override
     public String toString() {
-        return fileDaGestire.toString();
+        return "JFM del file: " + fileDaGestire.toString();
     }
 }
