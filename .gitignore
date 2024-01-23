@@ -40,3 +40,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Everything different from the JFM class inside the directory src/main/java/org/tpsit ###
+/src/main/java/org/tpsit/**
+!/src/main/java/org/tpsit/JavaFileManager.java

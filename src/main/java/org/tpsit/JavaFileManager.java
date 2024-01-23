@@ -535,6 +535,66 @@ public class JavaFileManager {
         }
     }
 
+    /**
+     * Metodo che permette di copiare il contenuto del file in un altro file specificato.
+     *
+     * @param jfm JavaFileManager in cui copiare il contenuto del file.
+     */
+    public void copiaIn(JavaFileManager jfm) {
+        JavaFileManager jfmCopiaIn = jfm;
+        //TODO: Implementare metodo copiaIn(JavaFileManager jfm)
+    }
+
+    /**
+     * Metodo che permette di copiare il contenuto del file in un altro file specificato.
+     *
+     * @param URL Percorso dalla root del progetto del file in cui copiare il contenuto del file.
+     */
+    public void copiaIn(String URL) {
+        JavaFileManager jfmCopiaIn = new JavaFileManager(URL);
+        //TODO: Implementare metodo copiaIn(String URL)
+    }
+
+    /**
+     * Metodo che permette di copiare il contenuto di un altro file in questo file.
+     *
+     * @param jfm JavaFileManager da cui copiare il contenuto del file.
+     */
+    public void copiaDa(JavaFileManager jfm) {
+        JavaFileManager jfmCopiaDa = jfm;
+        //TODO: Implementare metodo copiaDa(JavaFileManager jfm)
+    }
+
+    /**
+     * Metodo che permette di copiare il contenuto di un altro file in questo file.
+     *
+     * @param URL Percorso dalla root del progetto del file da cui copiare il contenuto del file.
+     */
+    public void copiaDa(String URL) {
+        JavaFileManager jfmCopiaDa = new JavaFileManager(URL);
+        //TODO: Implementare metodo copiaDa(String URL)
+    }
+
+    /**
+     * Metodo che permette di cancellare il contenuto del file.
+     */
+    public void cancellaContenuto() {
+        //TODO: Implementare metodo cancellaContenuto()
+    }
+
+    /**
+     * Metodo che permette di eliminare file.
+     */
+    public void elimina() {
+        if(this.fileDaGestire.isFile() && this.fileDaGestire.exists()) {
+            if(!this.fileDaGestire.delete()) {
+                if(this.mostraAvvisi) System.err.println("Impossibile eliminare il file tramite JFM. Errore durante l'eliminazione del file.");
+            }
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile eliminare il file tramite JFM. Il file non esiste o non è un file.");
+        }
+    }
+
     @Override
     public String toString() {
         return "JFM del file: " + fileDaGestire.toString();
