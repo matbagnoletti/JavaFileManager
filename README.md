@@ -189,5 +189,9 @@ Entrambi i metodi accettano un parametro che può essere di due tipi:
    jfm.copiaIn(jfm2);
    ```
 
+> [!CAUTION]
+>
+> Entrambi i metodi utilizzano la [scrittura standard](#scrivere-nel-formato-standard) e la [lettura standard](#leggere-nel-formato-standard), per cui si applicano le stesse considerazioni fatte per tali metodi.
+
 ## Licenza d'uso
 Questo progetto (e tutte le sue versioni) sono rilasciate sotto la [MB General Copyleft License](LICENSE).
