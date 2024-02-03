@@ -13,40 +13,48 @@ Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permett
 >
 > La classe `JavaFileManager` è thread-safe, quindi può essere utilizzata in ambienti multi-thread senza problemi. Tuttavia, l'uso eccessivo della sincronizzazione può portare a una diminuzione delle prestazioni, quindi utilizzala con attenzione.
 
+## Novità
+- **Versione 1.0.0**:
+  - Rilascio iniziale.
+
+- **Versione 1.1.0 (attuale)**:
+  - Aggiunta la possibilità di creare direttamente da JFM (se specificato) il file con il percorso specificato nel costruttore.
+  - Metodi di scrittura e lettura con firme più esplicite.
+  - Nuovi metodi per cancellare il contenuto del file o per eliminarlo completamente.
+
 ## Utilizzo
 Per utilizzare JFM è necessario:
 1. Creare un'istanza della classe `JavaFileManager`:
 
-   Il costruttore accetta due parametri: `boolean mostraAvvisi` (se `true`, mostra eventuali avvisi ed errori a video) e `String URL` (il percorso dalla root del file da gestire).
+   Il costruttore accetta tre parametri: `String nomeFile` (il nome del file con il percorso dalla root del progetto), `boolean creaSeNNull` (se `true`, nel caso in cui il file specificato non esista, viene creato) e `boolean mostraAvvisi` (se `true`, mostra eventuali avvisi ed errori a video).
 
     ```java
-    /* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
+    import javax.tools.JavaFileManager;/* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager();
     
     /* Non mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager(false);
+    jfm.setFile("percorso/del/tuo/file.txt");
     
     /* Mostra di default avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager(true);
+    jfm.setFile("percorso/del/tuo/file.txt");
     
     /* Mostra di default avvisi ed errori a video. Il percorso del file è quello specificato. */
     JavaFileManager jfm = new JavaFileManager("percorso/del/tuo/file.txt");
     
-    /* Mostra avvisi ed errori a video. Il percorso del file è quello specificato. */
-    JavaFileManager jfm = new JavaFileManager(true, "percorso/del/tuo/file.txt");
-    
-    /* Non mostra avvisi ed errori a video. Il percorso del file è quello specificato. */
-    JavaFileManager jfm = new JavaFileManager(false, "percorso/del/tuo/file.txt");
+    /* Mostra avvisi ed errori a video. Il percorso del file è quello specificato. Se non esiste lo crea. */
+    JavaFileManager jfm = new JavaFileManager("percorso/del/tuo/fileInesistente.txt", true);
     ```
 
-2. (eventualmente) Utilizzare i metodi di scrittura appropriati:
+2. Utilizzare i metodi di scrittura appropriati:
 
    JFM permette di scrivere su un file in tre modi:
    - [formato standard](#scrivere-nel-formato-standard) (con `BufferedWriter`).
    - [formato oggetto serializzato](#scrivere-un-oggetto-serializzato) (con `ObjectOutputStream`).
    - [formato dati tipizzati](#scrivere-dati-tipizzati) (con `DataOutputStream`).
 
-3. (eventualmente) Utilizzare i metodi di lettura appropriati:
+3. Utilizzare i metodi di lettura appropriati:
 
    JFM permette di leggere da un file in tre modi:
     - [formato standard](#leggere-nel-formato-standard) (con `BufferedReader`).
@@ -63,7 +71,7 @@ La modalità standard di scrittura su file utilizza la classe `BufferedWriter` e
     ```java
     jfm.scrivi("Ciao,");
     jfm.scrivi(" Mondo!", true);
-    /* Scrive "Ciao,", concatena " Mondo!" ed, infine, manda a capo */
+    /* Scrive "Ciao,", concatena " Mondo!" ed, infine, manda a capo (attenzione agli spazi) */
   
     jfm.scrivi("Ciao, mondo!", true);
     /* Scrive "Ciao, mondo!" e manda a capo */
@@ -78,12 +86,12 @@ La modalità di scrittura su file di un oggetto serializzato utilizza la classe 
 - `Object oggetto`: l'oggetto da scrivere sul file.
 
    ```java
-   jfm.scriviOggettoSerializzato(new Object());
+   jfm.scriviOggetto(new Object());
    ```
 
 > [!CAUTION]
 >
-> L'oggetto deve essere serializzabile. Il file dovrà poi essere opportunamente letto con `ottieniOggettoSerializzato()`.
+> L'oggetto deve essere serializzabile. Il file dovrà poi essere opportunamente letto con `leggiOggetto()`.
 
 ## Scrivere dati tipizzati
 
@@ -93,17 +101,17 @@ La modalità di scrittura su file di dati tipizzati utilizza la classe `DataOutp
 - `boolean cancellaContenutoPrecedente`: se `true` cancella il contenuto precedente del file, altrimenti scrive in append.
 
    ```java
-   jfm.scriviIntTipizzato(1);
-   jfm.scriviTestoTipizzato("Ciao, Mondo!");
+   jfm.scriviTipizzato(1);
+   jfm.scriviTipizzato("Ciao, Mondo!");
    ```
 
 > [!CAUTION]
 >
 > Il file dovrà poi essere opportunamente letto con uno di questi metodi:
-> - `ottieniTestoTipizzato()`.
-> - `ottieniIntTipizzato()`.
-> - `ottieniDoubleTipizzato()`.
-> - `ottieniFloatTipizzato()`.
+> - `leggiTipoString()`.
+> - `leggiTipoInt()`.
+> - `leggiTipoDouble()`.
+> - `leggiTipoFloat()`.
 >
 > I dati dovranno essere letti necessariamente nello stesso ordine in cui sono stati scritti.
 
@@ -112,7 +120,7 @@ La modalità di scrittura su file di dati tipizzati utilizza la classe `DataOutp
 La modalità standard di lettura da file utilizza la classe `BufferedReader`.
 
    ```java
-   String testo = jfm.ottieniTesto();
+   String testo = jfm.leggi();
    ```
 
 ## Leggere un oggetto serializzato
@@ -120,29 +128,29 @@ La modalità standard di lettura da file utilizza la classe `BufferedReader`.
 La modalità di lettura da file di un oggetto serializzato utilizza la classe `ObjectInputStream`.
 
    ```java
-   Object oggetto = jfm.ottieniOggettoSerializzato();
+   Object oggetto = jfm.leggiOggetto();
    ```
 
 > [!CAUTION]
 >
-> L'oggetto deve essere serializzabile. Il file deve essere stato opportunamente scritto con `scriviOggettoSerializzato()`.
+> L'oggetto deve essere serializzabile. Il file deve essere stato opportunamente scritto con `scriviOggetto()`.
 
 ## Leggere dati tipizzati
 
 La modalità di lettura da file di dati tipizzati utilizza la classe `DataInputStream`.
 
    ```java
-   int intero = jfm.ottieniIntTipizzato();
-   String testo = jfm.ottieniTestoTipizzato();
+   int intero = jfm.leggiTipoInt();
+   String testo = jfm.leggiTipoString();
    ```
 
 > [!CAUTION]
 >
 > Il file deve essere stato opportunamente scritto con uno di questi metodi:
-> - `scriviTestoTipizzato()`.
-> - `scriviIntTipizzato()`.
-> - `scriviDoubleTipizzato()`.
-> - `scriviFloatTipizzato()`.
+> - `scriviTipizzato()`.
+> - `scriviTipizzato()`.
+> - `scriviTipizzato()`.
+> - `scriviTipizzato()`.
 >
 > I dati devono essere letti necessariamente nello stesso ordine in cui sono stati scritti.
 
