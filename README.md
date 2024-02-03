@@ -18,7 +18,7 @@ Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permett
   - Rilascio iniziale.
 
 - **Versione 1.1.0 (attuale)**:
-  - Aggiunta la possibilità di creare direttamente da JFM (se specificato) il file con il percorso specificato nel costruttore.
+  - Aggiunta la possibilità di creare direttamente da JFM (se specificato) il file con il percorso nel costruttore.
   - Metodi di scrittura e lettura con firme più esplicite.
   - Nuovi metodi per cancellare il contenuto del file o per eliminarlo completamente.
 
