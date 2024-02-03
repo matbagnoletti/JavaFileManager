@@ -20,7 +20,7 @@ Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permett
 - **Versione 1.1.0 (attuale)**:
   - Aggiunta la possibilità di creare direttamente da JFM (se specificato) il file con il percorso nel costruttore.
   - Metodi di scrittura e lettura con firme più esplicite.
-  - Nuovi metodi per cancellare il contenuto del file o per eliminarlo completamente.
+  - Nuovi metodi per la gestione del file direttamente da JFM.
 
 ## Utilizzo
 Per utilizzare JFM è necessario:
@@ -60,6 +60,13 @@ Per utilizzare JFM è necessario:
     - [formato standard](#leggere-nel-formato-standard) (con `BufferedReader`).
     - [formato oggetto serializzato](#leggere-un-oggetto-serializzato) (con `ObjectInputStream`).
     - [formato dati tipizzati](#leggere-dati-tipizzati) (con `DataInputStream`).
+
+4. Utilizzare i metodi di gestione del file:
+
+   JFM permette di gestire il file in tre modi:
+    - [eliminare il file](#eliminare-il-file).
+    - [cancellare il contenuto del file](#cancellare-il-contenuto-del-file).
+    - [copiare il contenuto da/a un altro file](#copiare-il-contenuto-da/a-un-altro-file).
 
 ## Scrivere nel formato standard
 
@@ -153,6 +160,34 @@ La modalità di lettura da file di dati tipizzati utilizza la classe `DataInputS
 > - `scriviTipizzato()`.
 >
 > I dati devono essere letti necessariamente nello stesso ordine in cui sono stati scritti.
+
+## Eliminare il file
+Ora è possibile eliminare il file con il metodo `elimina()` sfruttando le proprietà della classe `File` di Java.
+
+   ```java
+   jfm.elimina();
+   ```
+
+## Cancellare il contenuto del file
+Ora è possibile cancellare il contenuto del file con il metodo `cancellaContenuto()` che sfrutta la scrittura in append.
+
+   ```java
+   jfm.cancellaContenuto();
+   ```
+
+## Copiare il contenuto da/a un altro file
+Ora è possibile copiare il contenuto da/a un altro file con il metodo `copiaDa()` e `copiaIn()`.
+Entrambi i metodi accettano un parametro che può essere di due tipi:
+- `String nomeFile`: il percorso del file da cui copiare o in cui copiare il contenuto.
+- `JavaFileManager jfm`: l'istanza di `JavaFileManager` da cui copiare o in cui copiare il contenuto.
+
+   ```java
+   JavaFileManager jfm = new JavaFileManager("percorso/del/tuo/file.txt");
+   jfm.copiaDa("percorso/del/tuo/file/da/cui/copiare.txt");
+   
+   JavaFileManager jfm2 = new JavaFileManager("percorso/del/tuo/file.txt");
+   jfm.copiaIn(jfm2);
+   ```
 
 ## Licenza d'uso
 Questo progetto (e tutte le sue versioni) sono rilasciate sotto la [MB General Copyleft License](LICENSE).
