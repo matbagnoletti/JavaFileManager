@@ -29,7 +29,7 @@ Per utilizzare JFM è necessario:
    Il costruttore accetta tre parametri: `String nomeFile` (il nome del file con il percorso dalla root del progetto), `boolean creaSeNNull` (se `true`, nel caso in cui il file specificato non esista, viene creato) e `boolean mostraAvvisi` (se `true`, mostra eventuali avvisi ed errori a video).
 
     ```java
-    import javax.tools.JavaFileManager;/* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
+    /* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager();
     
     /* Non mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
