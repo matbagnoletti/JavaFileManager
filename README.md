@@ -14,13 +14,20 @@ Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permett
 > La classe `JavaFileManager` è thread-safe, quindi può essere utilizzata in ambienti multi-thread senza problemi. Tuttavia, l'uso eccessivo della sincronizzazione può portare a una diminuzione delle prestazioni, quindi utilizzala con attenzione.
 
 ## Novità
-- **Versione 1.0.0**:
+- **Versione 1.0.0 (deprecata)**:
   - Rilascio iniziale.
 
-- **Versione 1.1.0 (attuale)**:
+- **Versione 1.1.0 (deprecata)**:
   - Aggiunta la possibilità di creare direttamente da JFM (se specificato) il file con il percorso nel costruttore.
   - Metodi di scrittura e lettura con firme più esplicite.
   - Nuovi metodi per la gestione del file direttamente da JFM.
+
+- **Versione 1.2.0**:
+  - Corretto funzionamento dei metodi di scrittura e lettura per dati tipizzati.
+  - Inserimento del metodo `termina()` per liberare le risorse al termine dell'utilizzo di JFM (doveroso).
+
+## Disclaimer
+A causa di un errore di progettazione, la versione 1.0.0 e 1.1.0 sono deprecate e se ne sconsiglia altamente l'uso. Si consiglia di utilizzare la versione 1.2.0 o successive.
 
 ## Utilizzo
 Per utilizzare JFM è necessario:
@@ -29,7 +36,7 @@ Per utilizzare JFM è necessario:
    Il costruttore accetta tre parametri: `String nomeFile` (il nome del file con il percorso dalla root del progetto), `boolean creaSeNNull` (se `true`, nel caso in cui il file specificato non esista, viene creato) e `boolean mostraAvvisi` (se `true`, mostra eventuali avvisi ed errori a video).
 
     ```java
-    import javax.tools.JavaFileManager;/* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
+    /* Mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
     JavaFileManager jfm = new JavaFileManager();
     
     /* Non mostra avvisi ed errori a video. Richiederà di inserire il percorso del file successivamente. */
@@ -66,7 +73,15 @@ Per utilizzare JFM è necessario:
    JFM permette di gestire il file in tre modi:
     - [eliminare il file](#eliminare-il-file).
     - [cancellare il contenuto del file](#cancellare-il-contenuto-del-file).
-    - [copiare il contenuto da/a un altro file](#copiare-il-contenuto-da/a-un-altro-file).
+    - [copiare il contenuto da/a un altro file](#copiare-il-contenuto-daa-un-altro-file).
+
+5. Chiudere l'istanza di `JavaFileManager`: 
+
+   È doveroso chiudere l'istanza di `JavaFileManager` con il metodo `termina()` per liberare le risorse.
+
+    ```java
+    jfm.termina();
+    ```
 
 ## Scrivere nel formato standard
 
@@ -102,9 +117,8 @@ La modalità di scrittura su file di un oggetto serializzato utilizza la classe 
 
 ## Scrivere dati tipizzati
 
-La modalità di scrittura su file di dati tipizzati utilizza la classe `DataOutputStream` e accetta tre parametri:
+La modalità di scrittura su file di dati tipizzati utilizza la classe `DataOutputStream` e accetta due parametri:
 - `String/int/double/float testoDaScrivere`: il testo da scrivere sul file.
-- `boolean mandaACapo`: se `true`, manda a capo dopo aver scritto il testo.
 - `boolean cancellaContenutoPrecedente`: se `true` cancella il contenuto precedente del file, altrimenti scrive in append.
 
    ```java
@@ -114,13 +128,13 @@ La modalità di scrittura su file di dati tipizzati utilizza la classe `DataOutp
 
 > [!CAUTION]
 >
-> Il file dovrà poi essere opportunamente letto con uno di questi metodi:
-> - `leggiTipoString()`.
-> - `leggiTipoInt()`.
-> - `leggiTipoDouble()`.
-> - `leggiTipoFloat()`.
+> La classe DataOutputStream scrive i dati in formato binario uno di seguito all'altro. È quindi è necessario leggerli con i metodi corrispondenti:
+> - `leggiString()`.
+> - `leggiInt()`.
+> - `leggiDouble()`.
+> - `leggiFloat()`.
 >
-> I dati dovranno essere letti necessariamente nello stesso ordine in cui sono stati scritti.
+> I dati dovranno essere letti necessariamente nello stesso ordine in cui sono stati scritti altrimenti JFM genererà un errore. È doveroso terminare l'istanza di `JavaFileManager` con il metodo `termina()` per liberare le risorse.
 
 ## Leggere nel formato standard
 
@@ -144,20 +158,17 @@ La modalità di lettura da file di un oggetto serializzato utilizza la classe `O
 
 ## Leggere dati tipizzati
 
-La modalità di lettura da file di dati tipizzati utilizza la classe `DataInputStream`.
+La modalità di lettura da file di dati tipizzati utilizza la classe `DataInputStream`. I dati letti sono scritti in formato binario uno di seguito all'altro. L'ordine di lettura è dunque importante.
 
    ```java
-   int intero = jfm.leggiTipoInt();
-   String testo = jfm.leggiTipoString();
+   //Nel file: 10"Ciao, mondo!" (in formato binario)
+   int intero = jfm.leggiInt(); // 10
+   String testo = jfm.leggiString(); // "Ciao, mondo!"
    ```
 
 > [!CAUTION]
 >
-> Il file deve essere stato opportunamente scritto con uno di questi metodi:
-> - `scriviTipizzato()`.
-> - `scriviTipizzato()`.
-> - `scriviTipizzato()`.
-> - `scriviTipizzato()`.
+> Il file deve essere stato opportunamente scritto con il metodo `scriviTipizzato()`.
 >
 > I dati devono essere letti necessariamente nello stesso ordine in cui sono stati scritti.
 
@@ -169,7 +180,7 @@ Ora è possibile eliminare il file con il metodo `elimina()` sfruttando le propr
    ```
 
 ## Cancellare il contenuto del file
-Ora è possibile cancellare il contenuto del file con il metodo `cancellaContenuto()` che sfrutta la scrittura in append.
+Ora è possibile cancellare il contenuto del file con il metodo `cancellaContenuto()`.
 
    ```java
    jfm.cancellaContenuto();
