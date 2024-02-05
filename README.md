@@ -11,7 +11,7 @@ Questo progetto ha lo scopo di creare una classe (`JavaFileManager`) che permett
 
 > [!TIP]
 >
-> La classe `JavaFileManager` è thread-safe, quindi può essere utilizzata in ambienti multi-thread senza problemi. Tuttavia, l'uso eccessivo della sincronizzazione può portare a una diminuzione delle prestazioni, quindi utilizzala con attenzione.
+> La classe `JavaFileManager` è thread-safe, quindi può essere utilizzata in ambienti multi-thread. Tuttavia, l'uso eccessivo della sincronizzazione può portare a una diminuzione delle prestazioni, quindi utilizzala con attenzione.
 
 ## Novità
 - **Versione 1.0.0 (deprecata)**:

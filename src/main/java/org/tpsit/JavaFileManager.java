@@ -1,6 +1,7 @@
 package org.tpsit;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * JavaFileManager
@@ -26,12 +27,17 @@ public class JavaFileManager {
     private File fileDaGestire;
 
     /**
+     * Stream di input per la lettura di dati tipizzati.
+     */
+    private DataInputStream inputStreamTipizzato = null;
+
+    /**
      * Costruttore di JavaFileManager.
      * Versione di default.
      */
     public JavaFileManager() {
         this.fileDaGestire = null;
-        System.err.println("Non è stato inserito alcun file da gestire all'interno del JFM creato. Da JFM('null').");
+        System.err.println("Non è stato inserito alcun file da gestire all'interno del JFM creato.\nDa JFM('null').\nGenerato alla creazione.");
     }
 
     /**
@@ -41,7 +47,7 @@ public class JavaFileManager {
     public JavaFileManager(boolean mostraAvvisi) {
         this.mostraAvvisi = mostraAvvisi;
         this.fileDaGestire = null;
-        if(this.mostraAvvisi) System.err.println("Non è stato inserito alcun file da gestire all'interno del JFM creato. Da JFM('null').");
+        if(this.mostraAvvisi) System.err.println("Non è stato inserito alcun file da gestire all'interno del JFM creato.\nDa JFM('null').\nGenerato alla creazione.");
     }
 
     /**
@@ -51,7 +57,9 @@ public class JavaFileManager {
     public JavaFileManager(String nomeFile) {
         this.fileDaGestire = new File(nomeFile);
         if (!this.fileDaGestire.exists() || !this.fileDaGestire.isFile()) {
-            if(this.mostraAvvisi) System.err.println("Il file specificato non esiste o non è un file. Da JFM('null').");
+            if(this.mostraAvvisi) System.err.println("Il file specificato non esiste o non è un file.\nDa JFM('null').\nGenerato alla creazione.");
+        } else {
+            this.inputStreamTipizzato = apriStreamTipizzato();
         }
     }
 
@@ -64,16 +72,15 @@ public class JavaFileManager {
         this.fileDaGestire = new File(nomeFile);
         if ((!this.fileDaGestire.exists() || !this.fileDaGestire.isFile())) {
             if(creaSeNull){
-                try {
-                    if(!this.fileDaGestire.createNewFile()){
-                        if(this.mostraAvvisi) System.err.println("Errore durante la creazione del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
-                    }
-                } catch (IOException e) {
-                    if (this.mostraAvvisi) System.err.println("Errore durante la creazione del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                this.fileDaGestire = creaFile(nomeFile);
+                if(this.fileDaGestire != null){
+                    this.inputStreamTipizzato = apriStreamTipizzato();
                 }
             } else {
-                if(this.mostraAvvisi) System.err.println("Il file specificato non esiste o non è un file. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Il file specificato non esiste o non è un file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato alla creazione.");
             }
+        } else {
+            this.inputStreamTipizzato = apriStreamTipizzato();
         }
     }
 
@@ -88,17 +95,52 @@ public class JavaFileManager {
         this.fileDaGestire = new File(nomeFile);
         if ((!this.fileDaGestire.exists() || !this.fileDaGestire.isFile())) {
             if(creaSeNull){
-                try {
-                    if(!this.fileDaGestire.createNewFile()){
-                        if(this.mostraAvvisi) System.err.println("Errore durante la creazione del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
-                    }
-                } catch (IOException e) {
-                    if (this.mostraAvvisi) System.err.println("Errore durante la creazione del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                this.fileDaGestire = creaFile(nomeFile);
+                if(this.fileDaGestire != null){
+                    this.inputStreamTipizzato = apriStreamTipizzato();
                 }
             } else {
-                if(this.mostraAvvisi) System.err.println("Il file specificato non esiste o non è un file. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Il file specificato non esiste o non è un file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato alla creazione.");
+            }
+        } else {
+            this.inputStreamTipizzato = apriStreamTipizzato();
+        }
+    }
+
+    /**
+     * Metodo che permette di creare il file specificato.
+     * @param nomeFile Nome del file con il percorso dalla root del progetto.
+     * @return File creato. Null in caso di errore durante la creazione del file.
+     */
+    public File creaFile(String nomeFile) {
+        File file = new File(nomeFile);
+        if (!file.exists()) {
+            try {
+                if(!file.createNewFile()) {
+                    if (this.mostraAvvisi) System.err.println("Errore durante la creazione del file tramite JFM.\nDa JFM('" + file + "').\nGenerato da creaFile().");
+                    return null;
+                }
+            } catch (IOException e) {
+                if (this.mostraAvvisi) System.err.println("Errore durante la creazione del file tramite JFM.\nDa JFM('" + file + "').\nGenerato da creaFile().");
+                return null;
             }
         }
+        return file;
+    }
+
+    /**
+     * Metodo che permette di aprire lo stream per la lettura di dati tipizzati.
+     * @return Stream di input per la lettura di dati tipizzati. Null in caso di errore durante l'apertura del file.
+     */
+    public DataInputStream apriStreamTipizzato() {
+        DataInputStream inputStream = null;
+        try {
+            inputStream = new DataInputStream(new FileInputStream(this.fileDaGestire));
+        } catch (FileNotFoundException e) {
+            if (this.mostraAvvisi) System.err.println("Errore durante l'apertura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da apriStreamTipizzato().");
+            return null;
+        }
+        return inputStream;
     }
 
     /**
@@ -106,20 +148,19 @@ public class JavaFileManager {
      * @param nomeFile Nome del file con il percorso dalla root del progetto.
      * @param creaSeNull Variabile che indica se creare o meno il file se non esiste.
      */
-    public void setFile(String nomeFile, boolean creaSeNull) {
+    public synchronized void setFile(String nomeFile, boolean creaSeNull) {
         this.fileDaGestire = new File(nomeFile);
         if ((!this.fileDaGestire.exists() || !this.fileDaGestire.isFile())) {
             if(creaSeNull){
-                try {
-                    if(!this.fileDaGestire.createNewFile()){
-                        if(this.mostraAvvisi) System.err.println("Errore durante la creazione del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
-                    }
-                } catch (IOException e) {
-                    if (this.mostraAvvisi) System.err.println("Errore durante la creazione del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                this.fileDaGestire = creaFile(nomeFile);
+                if(this.fileDaGestire != null){
+                    this.inputStreamTipizzato = apriStreamTipizzato();
                 }
             } else {
-                if(this.mostraAvvisi) System.err.println("Il file specificato non esiste o non è un file. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Il file specificato non esiste o non è un file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da setFile().");
             }
+        } else {
+            this.inputStreamTipizzato = apriStreamTipizzato();
         }
     }
 
@@ -127,7 +168,7 @@ public class JavaFileManager {
      * Setter dell'attributo boolean mostraAvvisi
      * @param mostraAvvisi Variabile che indica se stampare o meno gli avvisi sotto forma di errori.
      */
-    public void setAvvisi(boolean mostraAvvisi) {
+    public synchronized void setAvvisi(boolean mostraAvvisi) {
         this.mostraAvvisi = mostraAvvisi;
     }
 
@@ -146,11 +187,11 @@ public class JavaFileManager {
                 }
                 return contenutoTesto.toString();
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggi().");
                 return null;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggi().");
             return null;
         }
     }
@@ -166,10 +207,10 @@ public class JavaFileManager {
                 outputTesto.write(testoDaScrivere);
                 outputTesto.newLine();
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
         }
     }
 
@@ -185,10 +226,10 @@ public class JavaFileManager {
                 outputTesto.write(testoDaScrivere);
                 if(mandaACapo) outputTesto.newLine();
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
         }
     }
 
@@ -205,10 +246,10 @@ public class JavaFileManager {
                 outputTesto.write(testoDaScrivere);
                 if(mandaACapo) outputTesto.newLine();
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi(String).");
         }
     }
 
@@ -223,13 +264,13 @@ public class JavaFileManager {
                 try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                     outputOggetto.writeObject(oggettoDaSerializzare);
                 } catch (IOException e) {
-                    if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                    if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
                 }
             } else {
-                if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. L'oggetto inserito non è serializzabile. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. L'oggetto inserito non è serializzabile.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
         }
     }
 
@@ -245,13 +286,13 @@ public class JavaFileManager {
                 try (ObjectOutputStream outputOggetto = new ObjectOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                     outputOggetto.writeObject(oggettoDaSerializzare);
                 } catch (IOException e) {
-                    if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                    if(this.mostraAvvisi) System.err.println("Errore durante la serializzazione dell'oggetto tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
                 }
             } else {
-                if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. L'oggetto inserito non è serializzabile. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. L'oggetto inserito non è serializzabile.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
         }
     }
 
@@ -267,30 +308,12 @@ public class JavaFileManager {
             try (ObjectInputStream inputOggetto = new ObjectInputStream(new FileInputStream(this.fileDaGestire))) {
                 return inputOggetto.readObject();
             } catch (IOException | ClassNotFoundException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la de-serializzazione dell'oggetto tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la de-serializzazione dell'oggetto tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiOggetto().");
                 return null;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile de-serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile de-serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiOggetto().");
             return null;
-        }
-    }
-
-    /**
-     * Metodo che permette di scrivere una stringa UTF in un file. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
-     *
-     * @param testoDaScrivere Testo da scrivere nel file.
-     */
-    public synchronized void scriviTipizzato(String testoDaScrivere) {
-        if(this.fileDaGestire != null) {
-            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
-                outputTesto.writeUTF(testoDaScrivere);
-                outputTesto.writeUTF("\n");
-            } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
-            }
-        } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
         }
     }
 
@@ -298,18 +321,16 @@ public class JavaFileManager {
      * Metodo che permette di scrivere una stringa UTF in un file. Di default, non cancella il contenuto precedente del file.
      *
      * @param testoDaScrivere Testo da scrivere nel file.
-     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public synchronized void scriviTipizzato(String testoDaScrivere, boolean mandaACapo) {
+    public synchronized void scriviTipizzato(String testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeUTF(testoDaScrivere);
-                if(mandaACapo) outputTesto.writeUTF("\n");
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(String).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(String).");
         }
     }
 
@@ -317,37 +338,17 @@ public class JavaFileManager {
      * Metodo che permette di scrivere una stringa UTF in un file.
      *
      * @param testoDaScrivere Testo da scrivere nel file.
-     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente  Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public synchronized void scriviTipizzato(String testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviTipizzato(String testoDaScrivere, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.writeUTF(testoDaScrivere);
-                if(mandaACapo) outputTesto.writeUTF("\n");
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(String).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
-        }
-    }
-
-    /**
-     * Metodo che permette di scrivere un numero int in un file. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
-     *
-     * @param testoDaScrivere Testo da scrivere nel file.
-     */
-    public synchronized void scriviTipizzato(int testoDaScrivere) {
-        if(this.fileDaGestire != null) {
-            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
-                outputTesto.writeInt(testoDaScrivere);
-                outputTesto.writeUTF("\n");
-            } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
-            }
-        } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(String).");
         }
     }
 
@@ -355,18 +356,16 @@ public class JavaFileManager {
      * Metodo che permette di scrivere un numero int in un file. Di default, non cancella il contenuto precedente del file.
      *
      * @param testoDaScrivere Testo da scrivere nel file.
-     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public synchronized void scriviTipizzato(int testoDaScrivere, boolean mandaACapo) {
+    public synchronized void scriviTipizzato(int testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeInt(testoDaScrivere);
-                if(mandaACapo) outputTesto.writeUTF("\n");
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(int).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(int).");
         }
     }
 
@@ -374,37 +373,17 @@ public class JavaFileManager {
      * Metodo che permette di scrivere un numero int in un file.
      *
      * @param testoDaScrivere Testo da scrivere nel file.
-     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public synchronized void scriviTipizzato(int testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviTipizzato(int testoDaScrivere, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.writeInt(testoDaScrivere);
-                if(mandaACapo) outputTesto.writeUTF("\n");
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(int).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
-        }
-    }
-
-    /**
-     * Metodo che permette di scrivere un numero double in un file. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
-     *
-     * @param testoDaScrivere Testo da scrivere nel file.
-     */
-    public synchronized void scriviTipizzato(double testoDaScrivere) {
-        if(this.fileDaGestire != null) {
-            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
-                outputTesto.writeDouble(testoDaScrivere);
-                outputTesto.writeUTF("\n");
-            } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
-            }
-        } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(int).");
         }
     }
 
@@ -412,18 +391,16 @@ public class JavaFileManager {
      * Metodo che permette di scrivere un numero double in un file. Di default, non cancella il contenuto precedente del file.
      *
      * @param testoDaScrivere Testo da scrivere nel file.
-     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public synchronized void scriviTipizzato(double testoDaScrivere, boolean mandaACapo) {
+    public synchronized void scriviTipizzato(double testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeDouble(testoDaScrivere);
-                if(mandaACapo) outputTesto.writeUTF("\n");
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(double).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(double).");
         }
     }
 
@@ -431,37 +408,17 @@ public class JavaFileManager {
      * Metodo che permette di scrivere un numero double in un file.
      *
      * @param testoDaScrivere Testo da scrivere nel file.
-     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public synchronized void scriviTipizzato(double testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviTipizzato(double testoDaScrivere, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.writeDouble(testoDaScrivere);
-                if(mandaACapo) outputTesto.writeUTF("\n");
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(double).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
-        }
-    }
-
-    /**
-     * Metodo che permette di scrivere un numero float in un file. Di default, non cancella il contenuto precedente del file e manda a capo a fine riga.
-     *
-     * @param testoDaScrivere Testo da scrivere nel file.
-     */
-    public synchronized void scriviTipizzato(float testoDaScrivere) {
-        if(this.fileDaGestire != null) {
-            try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
-                outputTesto.writeFloat(testoDaScrivere);
-                outputTesto.writeUTF("\n");
-            } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
-            }
-        } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(double).");
         }
     }
 
@@ -469,18 +426,16 @@ public class JavaFileManager {
      * Metodo che permette di scrivere un numero float in un file. Di default, non cancella il contenuto precedente del file.
      *
      * @param testoDaScrivere Testo da scrivere nel file.
-     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      */
-    public synchronized void scriviTipizzato(float testoDaScrivere, boolean mandaACapo) {
+    public synchronized void scriviTipizzato(float testoDaScrivere) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, true))) {
                 outputTesto.writeFloat(testoDaScrivere);
-                if(mandaACapo) outputTesto.writeUTF("\n");
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(float).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(float).");
         }
     }
 
@@ -488,19 +443,17 @@ public class JavaFileManager {
      * Metodo che permette di scrivere un numero float in un file.
      *
      * @param testoDaScrivere Testo da scrivere nel file.
-     * @param mandaACapo Variabile che indica se mandare a capo o meno dopo aver scritto il testo.
      * @param cancellaContenutoPrecedente Variabile che indica se cancellare o meno il contenuto precedente del file. Se impostato su false, il file verrà aperto in modalità append.
      */
-    public synchronized void scriviTipizzato(float testoDaScrivere, boolean mandaACapo, boolean cancellaContenutoPrecedente) {
+    public synchronized void scriviTipizzato(float testoDaScrivere, boolean cancellaContenutoPrecedente) {
         if(this.fileDaGestire != null) {
             try (DataOutputStream outputTesto = new DataOutputStream(new FileOutputStream(this.fileDaGestire, !cancellaContenutoPrecedente))) {
                 outputTesto.writeFloat(testoDaScrivere);
-                if(mandaACapo) outputTesto.writeUTF("\n");
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(float).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(float).");
         }
     }
 
@@ -509,16 +462,16 @@ public class JavaFileManager {
      *
      * @return Stringa UTF letta dal file. Null in caso di errore durante la lettura del file.
      */
-    public synchronized String leggiTipoString() {
+    public synchronized String leggiString() {
         if(this.fileDaGestire != null) {
-            try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
-                return inputTesto.readUTF();
+            try {
+                return this.inputStreamTipizzato.readUTF();
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiString().");
                 return null;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiString().");
             return null;
         }
     }
@@ -528,16 +481,16 @@ public class JavaFileManager {
      *
      * @return Numero int letto dal file. 0 in caso di errore durante la lettura del file.
      */
-    public synchronized int leggiTipoInt() {
+    public synchronized int leggiInt() {
         if(this.fileDaGestire != null) {
-            try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
-                return inputTesto.readInt();
+            try {
+                return this.inputStreamTipizzato.readInt();
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiInt().");
                 return 0;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiInt().");
             return 0;
         }
     }
@@ -547,16 +500,16 @@ public class JavaFileManager {
      *
      * @return Numero double letto dal file. 0 in caso di errore durante la lettura del file.
      */
-    public synchronized double leggiTipoDouble() {
+    public synchronized double leggiDouble() {
         if(this.fileDaGestire != null) {
-            try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
-                return inputTesto.readDouble();
+            try {
+                return this.inputStreamTipizzato.readDouble();
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiDouble().");
                 return 0;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiDouble().");
             return 0;
         }
     }
@@ -566,16 +519,16 @@ public class JavaFileManager {
      *
      * @return Numero float letto dal file. 0 in caso di errore durante la lettura del file.
      */
-    public synchronized float leggiTipoFloat() {
+    public synchronized float leggiFloat() {
         if(this.fileDaGestire != null) {
-            try (DataInputStream inputTesto = new DataInputStream(new FileInputStream(this.fileDaGestire))) {
-                return inputTesto.readFloat();
+            try {
+                return this.inputStreamTipizzato.readFloat();
             } catch (IOException e) {
-                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Errore durante la lettura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiFloat().");
                 return 0;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiFloat().");
             return 0;
         }
     }
@@ -585,11 +538,11 @@ public class JavaFileManager {
      *
      * @param jfm JavaFileManager in cui copiare il contenuto del file.
      */
-    public void copiaIn(JavaFileManager jfm) {
+    public synchronized void copiaIn(JavaFileManager jfm) {
         if(this.leggi() != null) {
-            jfm.scrivi(this.leggi());
+            jfm.scrivi(this.leggi(), false);
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile copiare il contenuto del file tramite JFM. Errore durante la lettura del file. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile copiare il contenuto del file tramite JFM. Errore durante la lettura del file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da copiaIn().");
         }
     }
 
@@ -598,10 +551,12 @@ public class JavaFileManager {
      *
      * @param nomeFile Percorso dalla root del progetto del file in cui copiare il contenuto del file.
      */
-    public void copiaIn(String nomeFile) {
+    public synchronized void copiaIn(String nomeFile) {
         JavaFileManager jfmCopiaIn = new JavaFileManager(nomeFile, true);
-        while(this.leggi() != null) {
-            jfmCopiaIn.scrivi(this.leggi());
+        if(this.leggi() != null) {
+            jfmCopiaIn.scrivi(this.leggi(), false);
+        } else {
+            if(this.mostraAvvisi) System.err.println("Impossibile copiare il contenuto del file tramite JFM. Errore durante la lettura del file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da copiaIn().");
         }
     }
 
@@ -610,11 +565,11 @@ public class JavaFileManager {
      *
      * @param jfm JavaFileManager da cui copiare il contenuto del file.
      */
-    public void copiaDa(JavaFileManager jfm) {
+    public synchronized void copiaDa(JavaFileManager jfm) {
         if(jfm.leggi() != null) {
-            this.scrivi(jfm.leggi());
+            this.scrivi(jfm.leggi(), false);
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile copiare il contenuto del file tramite JFM. Errore durante la lettura del file. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile copiare il contenuto del file tramite JFM. Errore durante la lettura del file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da copiaDa().");
         }
     }
 
@@ -623,12 +578,12 @@ public class JavaFileManager {
      *
      * @param nomeFile Percorso dalla root del progetto del file da cui copiare il contenuto del file.
      */
-    public void copiaDa(String nomeFile) {
+    public synchronized void copiaDa(String nomeFile) {
         JavaFileManager jfmCopiaDa = new JavaFileManager(nomeFile);
         if(jfmCopiaDa.leggi() != null && this.fileDaGestire != null) {
-            this.scrivi(jfmCopiaDa.leggi());
+            this.scrivi(jfmCopiaDa.leggi(), false);
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile copiare il contenuto del file tramite JFM. Errore durante la lettura del file. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile copiare il contenuto del file tramite JFM. Errore durante la lettura del file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da copiaDa().");
         }
     }
 
@@ -636,7 +591,7 @@ public class JavaFileManager {
      * Metodo che permette di cancellare il contenuto del file tramite il metodo scrivi().
      * @see #scrivi(String, boolean, boolean)
      */
-    public void cancellaContenuto() {
+    public synchronized void cancellaContenuto() {
         this.scrivi("", false, true);
     }
 
@@ -644,13 +599,25 @@ public class JavaFileManager {
      * Metodo che permette di eliminare il file.
      * @see File#delete()
      */
-    public void elimina() {
+    public synchronized void elimina() {
         if(this.fileDaGestire.isFile() && this.fileDaGestire.exists()) {
             if(!this.fileDaGestire.delete()) {
-                if(this.mostraAvvisi) System.err.println("Impossibile eliminare il file tramite JFM. Errore durante l'eliminazione del file. Da JFM('" + this.fileDaGestire + "').");
+                if(this.mostraAvvisi) System.err.println("Impossibile eliminare il file tramite JFM. Errore durante l'eliminazione del file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da elimina().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile eliminare il file tramite JFM. Il file non esiste o non è un file. Da JFM('" + this.fileDaGestire + "').");
+            if(this.mostraAvvisi) System.err.println("Impossibile eliminare il file tramite JFM. Il file non esiste o non è un file.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da elimina().");
+        }
+    }
+
+    /**
+     * Metodo che permette di chiudere lo stream di input per la lettura di dati tipizzati.
+     * È obbligatorio invocare questo metodo prima di terminare il programma.
+     */
+    public synchronized void termina() {
+        try {
+            if(this.inputStreamTipizzato != null) this.inputStreamTipizzato.close();
+        } catch (IOException e) {
+            if(this.mostraAvvisi) System.err.println("Errore durante la chiusura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da termina().");
         }
     }
 
