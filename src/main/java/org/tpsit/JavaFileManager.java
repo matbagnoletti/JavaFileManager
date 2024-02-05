@@ -1,7 +1,6 @@
 package org.tpsit;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 /**
  * JavaFileManager
@@ -133,7 +132,7 @@ public class JavaFileManager {
      * @return Stream di input per la lettura di dati tipizzati. Null in caso di errore durante l'apertura del file.
      */
     public DataInputStream apriStreamTipizzato() {
-        DataInputStream inputStream = null;
+        DataInputStream inputStream;
         try {
             inputStream = new DataInputStream(new FileInputStream(this.fileDaGestire));
         } catch (FileNotFoundException e) {
@@ -191,7 +190,7 @@ public class JavaFileManager {
                 return null;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggi().");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da leggi().");
             return null;
         }
     }
@@ -210,7 +209,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scrivi().");
         }
     }
 
@@ -229,7 +228,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scrivi().");
         }
     }
 
@@ -249,7 +248,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scrivi(String).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scrivi(String).");
         }
     }
 
@@ -270,7 +269,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. L'oggetto inserito non è serializzabile.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
+            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviOggetto().");
         }
     }
 
@@ -292,7 +291,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. L'oggetto inserito non è serializzabile.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviOggetto().");
+            if(this.mostraAvvisi) System.err.println("Impossibile serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviOggetto().");
         }
     }
 
@@ -312,7 +311,7 @@ public class JavaFileManager {
                 return null;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile de-serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiOggetto().");
+            if(this.mostraAvvisi) System.err.println("Impossibile de-serializzare l'oggetto tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da leggiOggetto().");
             return null;
         }
     }
@@ -330,7 +329,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(String).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(String).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviTipizzato(String).");
         }
     }
 
@@ -348,7 +347,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(String).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(String).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviTipizzato(String).");
         }
     }
 
@@ -365,7 +364,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(int).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(int).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviTipizzato(int).");
         }
     }
 
@@ -383,7 +382,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(int).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(int).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviTipizzato(int).");
         }
     }
 
@@ -400,7 +399,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(double).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(double).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviTipizzato(double).");
         }
     }
 
@@ -418,7 +417,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(double).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(double).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviTipizzato(double).");
         }
     }
 
@@ -435,7 +434,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(float).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(float).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviTipizzato(float).");
         }
     }
 
@@ -453,7 +452,7 @@ public class JavaFileManager {
                 if(this.mostraAvvisi) System.err.println("Errore durante la scrittura del file tramite JFM.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(float).");
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da scriviTipizzato(float).");
+            if(this.mostraAvvisi) System.err.println("Impossibile scrivere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da scriviTipizzato(float).");
         }
     }
 
@@ -471,7 +470,7 @@ public class JavaFileManager {
                 return null;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiString().");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da leggiString().");
             return null;
         }
     }
@@ -490,7 +489,7 @@ public class JavaFileManager {
                 return 0;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiInt().");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da leggiInt().");
             return 0;
         }
     }
@@ -509,7 +508,7 @@ public class JavaFileManager {
                 return 0;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiDouble().");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da leggiDouble().");
             return 0;
         }
     }
@@ -528,7 +527,7 @@ public class JavaFileManager {
                 return 0;
             }
         } else {
-            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('" + this.fileDaGestire + "').\nGenerato da leggiFloat().");
+            if(this.mostraAvvisi) System.err.println("Impossibile leggere il contenuto del file tramite JFM. Non è stato inserito alcun file da gestire.\nDa JFM('null').\nGenerato da leggiFloat().");
             return 0;
         }
     }
